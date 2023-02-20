@@ -11,7 +11,8 @@ function [WcollSpat, chKeep]=CSPforSpatialFilter(xtildefTrain, yTrain, ...
 % Xclean2F - insert here the same as xtildefTrain. Train data set (separately because could include data from all 
 % recording not just the epochs prior to TMS)
 % penaltyC - covariance matrix to be used in regularization (if
-% noise covariance is knows). Use [], if prior penalty is used.
+% noise covariance is knows). Use [], if prior penalty is not used.
+% nS= number of spatial filters
 % useLasso - true if you wish to completely remove channels from spatial
 % filter estimation
 % nCkeep - number of channels to keep

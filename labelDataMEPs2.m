@@ -27,8 +27,11 @@ mepsize=log10(AmpsMclean);
 for iC=1:size(mepsize,2)
     %mirror-extension of MEPs at the beginning and end. Median filter to detect
     %the trend
-    btemp=max(medfilt1([flipud(mepsize(:,iC)); mepsize(:,iC); ...
-        flipud(mepsize(:,iC))],20, [],1), log10(thAmp));
+    btemp=medfilt1([flipud(mepsize(:,iC)); mepsize(:,iC); ...
+        flipud(mepsize(:,iC))],20, [],1);
+    %use the following commented lines if you want to hav 50microV as the minimum threshold for determining the excitability state from MEPs
+    %thAmp=50; 
+    %btemp=max(btemp, log10(thAmp));
     b(:,iC)=btemp((size(mepsize,1)+1):(end-size(mepsize,1)));
 
 end

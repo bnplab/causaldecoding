@@ -45,7 +45,7 @@ for i1=1:n
             iTr(iCV)=false;
 
             [WcollSpat]=CSPforSpatialFilter(xtildef(:,:,iTr), y(iTr), ...
-                regulCSPVec(iReg), xtildef(:,:,iTr));
+                regulCSPVec(iReg), xtildef(:,:,iTr), [], false, 3, 0);
             WcollSpatAll(:,:,iReg, kCV)=WcollSpat; %save the spatial filters to save time
             %The accuracies are computed for 8 features with various regularization coeffs
             [score, testAcc]=getTestScoreVersion1_4(xtildef, iTr, y, iCV, ...
@@ -80,7 +80,8 @@ for i1=1:n
     %outer loop testing
     iTr=iTr0;
 
-    [WcollSpat]=CSPforSpatialFilterTEP(xtildef(:,:,iTr), y(iTr), regulCSPVec(iRegMax), xtildef(:,:,iTr));
+    [WcollSpat]=CSPforSpatialFilterTEP(xtildef(:,:,iTr), y(iTr), regulCSPVec(iRegMax), xtildef(:,:,iTr),...
+        , [], false, 3, 0));
     % getting test accuracy for outer loop round i1
     [score, testAcc]=getTestScoreVersion1_4(xtildef, iTr, y, iTest, WcollSpat, ...
         3, nDynVec(iDynMax), 1, true,[],true,[]);

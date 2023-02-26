@@ -32,7 +32,7 @@ function [score, testAcc, FitInfo]=getTestScoreVersion1_4(xtildef, trainIdx, ...
 %
 
 [~, Nsub, ~]=size(xtildef);
-Xdec=filter3DTempSpat(xtildef(:,:,trainIdx),[],WcollSpat(:,1:nCompS));
+Xdec=filter3DTempSpat(xtildef(:,:,trainIdx),[],WcollSpat(:,1:nCompS), false);
 
 
 if isempty(gammaLasso)
@@ -51,7 +51,7 @@ end
 [WST, ~ ,~]=svds(CovST, nDyn);%,
 
 
-dynComp=WST(:,1:nDyn)'*reshape(filter3DTempSpat(xtildef,[],WcollSpat(:,1:nCompS), false),nCompS*Nsub,[]);%Nsub oli 300
+dynComp=WST(:,1:nDyn)'*reshape(filter3DTempSpat(xtildef,[],WcollSpat(:,1:nCompS), false),nCompS*Nsub,[]);%
 
 if normalize
     
@@ -73,7 +73,12 @@ idx=FitInfo.IndexMinDeviance;
 Bmin=B(:,idx);
 B0 = FitInfo.Intercept(idx);
 score=Bmin'*dynComp(:,testIdx)+B0;
-testAcc=[];
+
+CM=[sum(score>0 & y(testIdx)') sum(score>0 & ~y(testIdx)');...
+                        sum(score<=0 & y(testIdx)') sum(score<=0 & ~y(testIdx)')];
+                    
+
+testAcc=sum(diag(CM))/sum(CM(:));
 else
     rng('default')
     
